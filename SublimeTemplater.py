@@ -171,8 +171,6 @@ class STemplaterCommand(sublime_plugin.TextCommand):
     self.closer_re = templates.get_template().get_closer_re()
     self.generator = templates.get_template().get_addons_generator()
 
-    print self.opener_re
-
     if len(self.view.sel()) < 1:
       return
 
