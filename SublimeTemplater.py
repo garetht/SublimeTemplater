@@ -1,11 +1,57 @@
 import sublime, sublime_plugin
 import re
 
-class TemplateGenerator():
+class Template():
+  """
+  Some Terminology
+
+  Consider the Underscore/ERB templating system, which has
+  tags such as <% %> and <%= %>
+
+  An opener tag is one that is common to all tags in the templating
+  system. In this case, it is <%
+
+  Similarly, a closer tag is %>
+
+  Addons are defined as an array of arrays, the latter of which
+  have two elements. Given the two tags above, the addons
+  are [['', ''], ['=', '']]
+
+  A block is the combination of an opener and its addons, or
+  its closer and its addons.
+
+  """
+
+
   def __init__(self, opener, closer, addons):
     self.opener = opener
     self.closer = closer
     self.addons = addons
+    self.addons_generator = None
+
+  def get_single_multi_re(self, singles, multis, can_be_empty):
+    """
+    Produces a regular expression that will handle
+    single character add-ons, multiple character add-ons,
+    and empty character add-ons.
+    """
+    final_re_list = []
+
+    # If no opener addons, then something like []? is pointless
+    if len(singles) > 0:
+      single_addon_re = "".join(["\\"+ x for x in singles])
+      single_re = "[" + single_addon_re + "]"
+      final_re_list.append(single_re)
+
+    if len(multis) > 0:
+      multi_re = [re.escape(expr) for expr in multis]
+      for mre in multi_re:
+        final_re_list.append(mre)
+
+    final_re = "(" + "|".join(final_re_list) + ")"
+    if can_be_empty: final_re += "?"
+
+    return final_re
 
   def get_addon_re(self, position):
     # Gets the nth element in each template addon
@@ -17,11 +63,14 @@ class TemplateGenerator():
     # Produces a list of non-empty addon symbols at that position
     non_empty = filter((lambda y: y != ""), uniques)
 
+    single_addons = [x for x in non_empty if len(x) == 1]
+    multi_addons = [x for x in non_empty if len(x) > 1]
     # If the position is allowed to be empty, make the regexp optional
-    opt = "?" if len(non_empty) < len(uniques) else ""
-    opener_addons = "".join(["\\"+ x for x in non_empty])
+    can_be_empty = len(non_empty) < len(uniques)
 
-    return "[" + opener_addons + "]" + opt
+    re = self.get_single_multi_re(single_addons, multi_addons, can_be_empty)
+
+    return re
 
   def get_opener_re(self):
     opener = re.escape(self.opener)
@@ -42,7 +91,23 @@ class TemplateGenerator():
 
   def get_addons_generator(self):
     def generator():
-      self.
+      i = 0
+      addon_length = len(self.addons)
+      while True:
+        if addon_length > 0:
+          addons = self.addons[i % addon_length]
+        else:
+          addons = ['', '']
+        argval = yield [self.opener + addons[0], addons[1] + self.closer]
+        if argval is None:
+          i += 1
+        else:
+          i = argval
+
+    if self.addons_generator is None:
+      self.addons_generator = generator()
+      self.addons_generator.send(None)
+    return self.addons_generator
 
 class TemplateCollection():
   def __init__(self):
@@ -64,42 +129,50 @@ class TemplateCollection():
     # PHP
     self.QUESTION_OPENER = "<?"
     self.QUESTION_CLOSER = "?>"
-    self.QUESTION_ADDONS = [['=', ''], ['#', ''], ['php', '']]
+    self.PHP_QUESTION_ADDONS = [['', ''], ['=', ''], ['#', ''], ['php', '']]
+
+    self.set_percent_template()
 
   def set_syntax_generator(self, name):
-    generator = None
     if name in ["erb", "underscore", "ejs"]:
-      generator = self.get_percent_generator()
+      self.set_percent_template()
     elif name in ["mustache", "handlebars"]:
-      generator = self.get_braces_generator()
+      self.set_braces_template()
     elif name in ["jinja", "twig", "nunjucks"]:
-      generator = self.get_brace_percent_generator()
+      self.set_brace_percent_template()
     elif name in ["php"]:
-      generator = self.get_question_generator()
+      self.set_php_question_template()
 
-    return generator
+  def set_percent_template(self):
+    self.template = Template(self.PERCENT_OPENER, self.PERCENT_CLOSER, self.PERCENT_ADDONS)
 
-  def set_percent_generator():
-    pass
+  def set_braces_template(self):
+    print "setting braces template"
+    self.template = Template(self.BRACES_OPENER, self.BRACES_CLOSER, self.BRACES_ADDONS)
 
-  def set_braces_generator(self):
-    pass
+  def set_brace_percent_template(self):
+    self.template = Template(self.BRACE_PERCENT_OPENER, self.BRACE_PERCENT_CLOSER, self.BRACE_PERCENT_ADDONS)
 
-  def set_brace_percent_generator(self):
-    pass
+  def set_php_question_template(self):
+    self.template = Template(self.QUESTION_OPENER, self.QUESTION_CLOSER, self.PHP_QUESTION_ADDONS)
 
-  def set_question_generator(self):
-    pass
+  def get_template(self):
+    return self.template
+
+templates = TemplateCollection()
 
 class SyntaxCommand(sublime_plugin.WindowCommand):
-    def __init__():
-      pass
-
     def run(self, syntax):
-      pass
+      templates.set_syntax_generator(syntax)
 
-class TemplateCommand(sublime_plugin.TextCommand):
+class STemplaterCommand(sublime_plugin.TextCommand):
   def run(self, edit):
+    self.opener_re = templates.get_template().get_opener_re()
+    self.closer_re = templates.get_template().get_closer_re()
+    self.generator = templates.get_template().get_addons_generator()
+
+    print self.opener_re
+
     if len(self.view.sel()) < 1:
       return
 
@@ -133,13 +206,13 @@ class TemplateCommand(sublime_plugin.TextCommand):
     right_region = sublime.Region(containing_line.end(), region.end())
 
     # Search in the left region for an opening bracket
-    found_openers = list(re.finditer(ERB_OPENER_REGEX, self.view.substr(left_region)))
+    found_openers = list(re.finditer(self.opener_re, self.view.substr(left_region)))
     if len(found_openers) > 0:
       # if found, create a region for it using the last match - the rightmost bracket found
       opener = sublime.Region(left_region.begin() + found_openers[-1].start(), left_region.begin() + found_openers[-1].end())
 
     # Search in the right region for a closing bracket
-    found_closers = list(re.finditer(ERB_CLOSER_REGEX, self.view.substr(right_region)))
+    found_closers = list(re.finditer(self.closer_re, self.view.substr(right_region)))
     if len(found_closers) > 0:
       # if found, create a region for it using the first match - the leftmost bracket found
       closer = sublime.Region(right_region.begin() + found_closers[0].start(), right_region.begin() + found_closers[0].end())
@@ -148,7 +221,7 @@ class TemplateCommand(sublime_plugin.TextCommand):
 
   def insert_erb_block(self, edit, region):
     # insert the first block in the list
-    default_block = ERB_BLOCKS[0]
+    default_block = self.generator.send(0)
 
     # insert in reverse order because line length might change
     self.view.insert(edit, region.end(), " %s" % default_block[1])
@@ -164,18 +237,12 @@ class TemplateCommand(sublime_plugin.TextCommand):
     changed_before = len(next_block[0]) - len(self.view.substr(opener))
 
     # Cycle by replacing in reverse order because line length might change
-    self.view.replace(edit, opener, next_block[1])
+    self.view.replace(edit, closer, next_block[1])
     self.view.replace(edit, opener, next_block[0])
 
     return sublime.Region(region.begin() + changed_before, region.end() + changed_before)
 
   def get_next_erb_block(self, opening_bracket, closing_bracket):
-    for i, block in enumerate(ERB_BLOCKS):
-      if [opening_bracket, closing_bracket] == block:
-        if i + 1 >= len(ERB_BLOCKS):
-          return ERB_BLOCKS[0]
-        else:
-          return ERB_BLOCKS[i + 1]
-    return ERB_BLOCKS[0]
+    return next(self.generator)
 
 
