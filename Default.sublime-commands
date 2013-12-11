@@ -1,42 +1,42 @@
 [
 	{
-    "caption": "SublimeTemplater: Insert Template Tags",
-    "command": "template"
+    "caption": "Sublime Templater: Insert Template Tags",
+    "command": "templater"
   },
   {
-    "caption": "SublimeTemplater: Set ERB Syntax",
+    "caption": "Sublime Templater: Set ERB Syntax",
     "command": "syntax", "args": {"syntax": "erb"}
   },
   {
-    "caption": "SublimeTemplater: Set Underscore Syntax",
+    "caption": "Sublime Templater: Set Underscore Syntax",
     "command": "syntax", "args": {"syntax": "underscore"}
   },
   {
-    "caption": "SublimeTemplater: Set EJS Syntax",
+    "caption": "Sublime Templater: Set EJS Syntax",
     "command": "syntax", "args": {"syntax": "ejs"}
   },
   {
-    "caption": "SublimeTemplater: Set Mustache Syntax",
+    "caption": "Sublime Templater: Set Mustache Syntax",
     "command": "syntax", "args": {"syntax": "mustache"}
   },
   {
-    "caption": "SublimeTemplater: Set Handlebars Syntax",
+    "caption": "Sublime Templater: Set Handlebars Syntax",
     "command": "syntax", "args": {"syntax": "handlebars"}
   },
   {
-    "caption": "SublimeTemplater: Set Jinja2 Syntax",
+    "caption": "Sublime Templater: Set Jinja2 Syntax",
     "command": "syntax", "args": {"syntax": "jinja"}
   },
   {
-    "caption": "SublimeTemplater: Set Twig Syntax",
+    "caption": "Sublime Templater: Set Twig Syntax",
     "command": "syntax", "args": {"syntax": "twig"}
   },
   {
-    "caption": "SublimeTemplater: Set Nunjucks Syntax",
+    "caption": "Sublime Templater: Set Nunjucks Syntax",
     "command": "syntax", "args": {"syntax": "nunjucks"}
   },
   {
-    "caption": "SublimeTemplater: Set PHP Syntax",
+    "caption": "Sublime Templater: Set PHP Syntax",
     "command": "syntax", "args": {"syntax": "php"}
   }
 ]

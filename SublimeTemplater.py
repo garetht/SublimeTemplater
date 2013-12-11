@@ -136,7 +136,7 @@ class TemplateCollection():
   def set_syntax_generator(self, name):
     if name in ["erb", "underscore", "ejs"]:
       self.set_percent_template()
-    elif name in ["mustache", "handlebars"]:
+    elif name in ["mustache", "handlebars", "angular"]:
       self.set_braces_template()
     elif name in ["jinja", "twig", "nunjucks"]:
       self.set_brace_percent_template()
@@ -161,11 +161,34 @@ class TemplateCollection():
 
 templates = TemplateCollection()
 
+class TemplateListeners(sublime_plugin.EventListener):
+  def set_template_syntax(self, view):
+    syntax = view.settings().get('syntax').lower()
+    file_name = view.file_name().lower()
+
+    if syntax.find("javascript") >= 0:
+      templates.set_percent_template()
+    elif syntax.find("angularjs") >= 0:
+      templates.set_braces_template()
+    elif syntax.find("python") >= 0:
+      templates.set_brace_percent_template()
+    elif syntax.find("ruby") >= 0:
+      templates.set_percent_template()
+    elif syntax.find("php") >= 0:
+      templates.set_php_question_template()
+
+    if file_name.find("erb", -3) >= 0:
+      print "found erb"
+      templates.set_percent_template()
+
+  def on_load(self, view):
+    self.set_template_syntax(view)
+
 class SyntaxCommand(sublime_plugin.WindowCommand):
     def run(self, syntax):
       templates.set_syntax_generator(syntax)
 
-class STemplaterCommand(sublime_plugin.TextCommand):
+class TemplaterCommand(sublime_plugin.TextCommand):
   def run(self, edit):
     self.opener_re = templates.get_template().get_opener_re()
     self.closer_re = templates.get_template().get_closer_re()
