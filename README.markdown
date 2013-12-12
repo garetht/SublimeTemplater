@@ -1,40 +1,40 @@
-A Port of TextMate's ERB support for Sublime Text 2
+SublimeTemplater
+===
+**A fork of SublimeERB, generalized to multiple templating systems**
 
-## Installation
+## Getting Started
+SublimeTemplater helps you insert template tags - Underscore's `<% %>`, PHP's `<? ?>`, or Angular's `{{ }}`, and more - into your documents with one shortcut key. Inspired and forked from SublimeERB, repeated keypresses also allows you to cycle through a list of different template tags (`<% %>` to `<%= %>`). Template tags will also automatically surround selected text.
 
-### Sublime Package Control
+# Installation
+## Package Control Installation
+When SublimeTemplater is officially released it will be available on [Sublime Package Control](https://sublime.wbond.net/). Press `ctrl`+`shift`+`p` on Windows/Linux and `cmd`+`shift`+`p` on a Mac to bring up Sublime's Command Pallete, then type `install package` to bring up Package Control's package selector. It should be the first selection. Type "SublimeERB," which, again, should be the first selection, and then hit enter.
 
-I suggest using [Sublime Package Control](https://sublime.wbond.net/). Once you have Sublime Package control installed, you can install "SublimeERB" in a few easy steps.
+### Quick Manual Installation: Mac OS X
+Run the following commands:
+`git clone https://github.com/garetht/SublimeTemplater.git ~/.sublime_templater`
+`ln -fs ~/.sublime_templater/ ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/SublimeTemplater`
 
-Press `CTRL + SHIFT + P` on Windows and Linux and `CMD + SHIFT + P` on a Mac to bring up Sublime's Command Palette, then type `install package` to bring up Package Control's package selector. It should be the first selection. Type "SublimeERB," which, again, should be the first selection, and then hit enter. You should now have the proper package installed, but you will still need to [add a keybinding to use it.](#add-keybinding)
+### Quick Manual Installation: Linux
+Run the following commands:
+`git clone https://github.com/garetht/SublimeTemplater.git ~/.sublime_templater`
+`ln -fs ~/.sublime_templater/ ~/.config/sublime-text-2/Packages/SublimeTemplater`
 
-#### Sublime Text 3 Beta Install
+### Quick Manual Installation: Windows
+Instructions are unavailable at this time.
 
-Make sure to follow the [updated instructions](http://wbond.net/sublime_packages/package_control/installation#st3) for installing package control. Even with the package being installed via package control, you still need to modify you keybinding file as per the instructions below. The manual installation listed below still works for Sublime Text 3.
+
+### Manual Installation: Mac OS X and Linux
+1. Clone the repository with `git clone https://github.com/garetht/SublimeTemplater.git`
+2. Move the repository to the Packages directory of Sublime Text, or make a symbolic link to it.
+
+By default, the shortcut to toggle templates is bound to `ctrl`+`shift`+`p`, but you can change this in your user settings.
+
+### Sublime Text 3 Support
+
+Sublime Text 3 support is not available at this time.
 
 
-### Manual Installation
-
-Clone the repository and symlink file to Sublime's User Directory:
-
-#### OS X
-
-```
-git clone git@github.com:eddorre/SublimeERB.git ~/.sublime_erb
-
-ln -fs ~/.sublime_erb/ ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/SublimeERB
-
-```
-
-#### Linux
-
-```
-git clone git@github.com:eddorre/SublimeERB.git ~/.sublime_erb
-
-ln -fs ~/.sublime_erb/ ~/.config/sublime-text-2/Packages/SublimeERB
-```
-
-## Usage
+# Usage
 
 ### Add Keybinding
 
@@ -42,7 +42,7 @@ Open your User Keybinding File and add the following keybinding to activate the 
 
 ```json
   [
-    { "keys": ["ctrl+shift+."], "command": "erb" }
+    { "keys": ["ctrl+shift+."], "command": "templater" }
   ]
 ```
 
@@ -62,16 +62,14 @@ Now you can use `ctrl+shift+.` to create and toggle between ERB tags. NOTE: On a
 
 ## Update To Latest Version
 
+If you followed the quick manual install instructions, you can use these commands to update your installation of SublimeTemplater.
+
 ```
-  cd ~/.sublime_erb
+  cd ~/.sublime_templater
   git pull --rebase
 ```
 
-Sample
-----------
-<img src="https://github.com/eddorre/SublimeERB/raw/master/erb.gif" />
-
-Copyright
----------
+#### Copyright
+**SublimeTemplater** is copyrighted 2013 by [Gareth Tan](http://garethtan.com), and is released under the MIT License.
 
 **SublimeERB** is Copyright (c) 2011 [Carlos Rodriguez](http://eddorre.com), released under the MIT License.
