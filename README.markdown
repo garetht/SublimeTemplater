@@ -7,7 +7,7 @@ SublimeTemplater helps you insert template tags - Underscore's `<% %>`, PHP's `<
 
 # Installation
 ## Package Control Installation
-When SublimeTemplater is officially released it will be available on [Sublime Package Control](https://sublime.wbond.net/). Press `ctrl`+`shift`+`p` on Windows/Linux and `cmd`+`shift`+`p` on a Mac to bring up Sublime's Command Pallete, then type `install package` to bring up Package Control's package selector. It should be the first selection. Type "SublimeERB," which, again, should be the first selection, and then hit enter.
+When SublimeTemplater is officially released it will be available on [Sublime Package Control](https://sublime.wbond.net/). **It is not yet available there.** Press `ctrl`+`shift`+`p` on Windows/Linux and `cmd`+`shift`+`p` on a Mac to bring up Sublime's Command Pallete, then type `install package` to bring up Package Control's package selector. It should be the first selection. Type "SublimeERB," which, again, should be the first selection, and then hit enter.
 
 ### Quick Manual Installation: Mac OS X
 Run the following commands:
