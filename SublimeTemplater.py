@@ -134,13 +134,13 @@ class TemplateCollection():
     self.set_percent_template()
 
   def set_syntax_generator(self, name):
-    if name in ["erb", "underscore", "ejs"]:
+    if name is "percent":
       self.set_percent_template()
-    elif name in ["mustache", "handlebars", "angular"]:
+    elif name in "braces":
       self.set_braces_template()
-    elif name in ["jinja", "twig", "nunjucks"]:
+    elif name in "brace-percent":
       self.set_brace_percent_template()
-    elif name in ["php"]:
+    elif name in "php":
       self.set_php_question_template()
 
   def set_percent_template(self):

@@ -11,13 +11,17 @@ When SublimeTemplater is officially released it will be available on [Sublime Pa
 
 ### Quick Manual Installation: Mac OS X
 Run the following commands:
-`git clone https://github.com/garetht/SublimeTemplater.git ~/.sublime_templater`
-`ln -fs ~/.sublime_templater/ ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/SublimeTemplater`
+````
+git clone https://github.com/garetht/SublimeTemplater.git ~/.sublime_templater
+ln -fs ~/.sublime_templater/ ~/Library/Application\ Support/Sublime\ Text\ 2/Packages/SublimeTemplater
+````
 
 ### Quick Manual Installation: Linux
 Run the following commands:
-`git clone https://github.com/garetht/SublimeTemplater.git ~/.sublime_templater`
-`ln -fs ~/.sublime_templater/ ~/.config/sublime-text-2/Packages/SublimeTemplater`
+````
+git clone https://github.com/garetht/SublimeTemplater.git ~/.sublime_templater
+ln -fs ~/.sublime_templater/ ~/.config/sublime-text-2/Packages/SublimeTemplater
+````
 
 ### Quick Manual Installation: Windows
 Instructions are unavailable at this time.

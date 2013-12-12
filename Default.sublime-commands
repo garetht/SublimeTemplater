@@ -5,35 +5,35 @@
   },
   {
     "caption": "Sublime Templater: Set ERB Syntax",
-    "command": "syntax", "args": {"syntax": "erb"}
+    "command": "syntax", "args": {"syntax": "percent"}
   },
   {
     "caption": "Sublime Templater: Set Underscore Syntax",
-    "command": "syntax", "args": {"syntax": "underscore"}
+    "command": "syntax", "args": {"syntax": "percent"}
   },
   {
     "caption": "Sublime Templater: Set EJS Syntax",
-    "command": "syntax", "args": {"syntax": "ejs"}
+    "command": "syntax", "args": {"syntax": "percent"}
   },
   {
     "caption": "Sublime Templater: Set Mustache Syntax",
-    "command": "syntax", "args": {"syntax": "mustache"}
+    "command": "syntax", "args": {"syntax": "braces"}
   },
   {
     "caption": "Sublime Templater: Set Handlebars Syntax",
-    "command": "syntax", "args": {"syntax": "handlebars"}
+    "command": "syntax", "args": {"syntax": "braces"}
   },
   {
     "caption": "Sublime Templater: Set Jinja2 Syntax",
-    "command": "syntax", "args": {"syntax": "jinja"}
+    "command": "syntax", "args": {"syntax": "brace-percent"}
   },
   {
     "caption": "Sublime Templater: Set Twig Syntax",
-    "command": "syntax", "args": {"syntax": "twig"}
+    "command": "syntax", "args": {"syntax": "brace-percent"}
   },
   {
     "caption": "Sublime Templater: Set Nunjucks Syntax",
-    "command": "syntax", "args": {"syntax": "nunjucks"}
+    "command": "syntax", "args": {"syntax": "brace-percent"}
   },
   {
     "caption": "Sublime Templater: Set PHP Syntax",
