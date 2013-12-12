@@ -35,7 +35,7 @@ By default, that directory, the Sublime Text packages directory, is located at `
 1. Clone the repository with `git clone https://github.com/garetht/SublimeTemplater.git`
 2. Move the repository to the Packages directory of Sublime Text, or make a symbolic link to it.
 
-By default, the shortcut to toggle templates is bound to `ctrl`+`shift`+`p`, but you can change this in your user settings.
+By default, the shortcut to toggle templates is bound to `ctrl`+`shift`+`.`, but you can change this in your user settings.
 
 ### Sublime Text 3 Support
 
@@ -49,7 +49,7 @@ While SublimeTemplater makes some crude attempts to determine which tags it shou
 
 ### Keybindings
 
-By default, SublimeTemplater binds the tag insert and cycle command to `cmd`+`shift`+`p` on Macs, and `ctrl`+`shift`+`p` on Windows and Linux. You can also place this in your user keybinding preferences (`Sublime Text 2 > Preferences > Key Bindings - User` on Mac, `Preferences > Key Bindings - User` on Windows)
+By default, SublimeTemplater binds the tag insert and cycle command to `ctrl`+`shift`+`.`. You can also place this in your user keybinding preferences (`Sublime Text 2 > Preferences > Key Bindings - User` on Mac, `Preferences > Key Bindings - User` on Windows)
 
 ```json
   [
@@ -69,7 +69,7 @@ You can also modify your user keybindings file to enable the shortcut in the mos
   ]
 ```
 
-Now you can use `ctrl+shift+.` to create and toggle between ERB tags. NOTE: On a Mac use the command key for the ctrl key.
+Now you can use `ctrl+shift+.` to create and toggle between templates of a certain syntax.
 
 ## Update To Latest Version
 
