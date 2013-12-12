@@ -114,7 +114,7 @@ class TemplateCollection():
     # ERB, Underscore, EJS
     self.PERCENT_OPENER = "<%"
     self.PERCENT_CLOSER = "%>"
-    self.PERCENT_ADDONS = [['=', ''], ['', ''], ['-', '-'], ['=', '-'], ['#', ''], ['', '-']]
+    self.PERCENT_ADDONS = [['', ''], ['=', ''], ['#', ''], ['-', '-'], ['=', '-'], ['', '-']]
 
     # Mustache, Handlebars
     self.BRACES_OPENER = "{{"
@@ -147,7 +147,6 @@ class TemplateCollection():
     self.template = Template(self.PERCENT_OPENER, self.PERCENT_CLOSER, self.PERCENT_ADDONS)
 
   def set_braces_template(self):
-    print "setting braces template"
     self.template = Template(self.BRACES_OPENER, self.BRACES_CLOSER, self.BRACES_ADDONS)
 
   def set_brace_percent_template(self):
@@ -164,7 +163,13 @@ templates = TemplateCollection()
 class TemplateListeners(sublime_plugin.EventListener):
   def set_template_syntax(self, view):
     syntax = view.settings().get('syntax').lower()
-    file_name = view.file_name().lower()
+    file_name = view.file_name()
+    if file_name is None:
+      file_name = ""
+    else:
+      file_name = file_name.lower()
+
+    templates.set_percent_template()
 
     if syntax.find("javascript") >= 0:
       templates.set_percent_template()
@@ -172,21 +177,32 @@ class TemplateListeners(sublime_plugin.EventListener):
       templates.set_braces_template()
     elif syntax.find("python") >= 0:
       templates.set_brace_percent_template()
-    elif syntax.find("ruby") >= 0:
+    elif syntax.find("ruby") >= 0 or syntax.find("rails") >= 0:
       templates.set_percent_template()
     elif syntax.find("php") >= 0:
       templates.set_php_question_template()
 
     if file_name.find("erb", -3) >= 0:
-      print "found erb"
       templates.set_percent_template()
+
+  def set_syntax_change_event_listener(self, view):
+    def set_syntax_closure():
+      return self.set_template_syntax(view)
+    view.settings().add_on_change('syntax', set_syntax_closure)
 
   def on_load(self, view):
     self.set_template_syntax(view)
+    self.set_syntax_change_event_listener(view)
+
+  def on_new(self, view):
+    self.set_syntax_change_event_listener(view)
+
+  # Also call set_template_syntax when the syntax is changed
+  # What is fired when the syntax changes?
 
 class SyntaxCommand(sublime_plugin.WindowCommand):
-    def run(self, syntax):
-      templates.set_syntax_generator(syntax)
+  def run(self, syntax):
+    templates.set_syntax_generator(syntax)
 
 class TemplaterCommand(sublime_plugin.TextCommand):
   def run(self, edit):
@@ -204,10 +220,10 @@ class TemplaterCommand(sublime_plugin.TextCommand):
 
       # Cycle through possible blocks if brackets already exist
       if (opener is not None) and (closer is not None):
-        new_selections.append(self.cycle_erb_block(edit, opener, closer, region))
+        new_selections.append(self.cycle_blocks(edit, opener, closer, region))
       # Insert new blocks if they do not
       else:
-        new_selections.append(self.insert_erb_block(edit, region))
+        new_selections.append(self.insert_block(edit, region))
 
     self.view.sel().clear()
 
@@ -240,7 +256,7 @@ class TemplaterCommand(sublime_plugin.TextCommand):
 
     return opener, closer
 
-  def insert_erb_block(self, edit, region):
+  def insert_block(self, edit, region):
     # insert the first block in the list
     default_block = self.generator.send(0)
 
@@ -250,9 +266,9 @@ class TemplaterCommand(sublime_plugin.TextCommand):
 
     return sublime.Region(region.begin() + inserted_before, region.end() + inserted_before)
 
-  def cycle_erb_block(self, edit, opener, closer, region):
+  def cycle_blocks(self, edit, opener, closer, region):
     # Get next block to cycle to
-    next_block = self.get_next_erb_block(self.view.substr(opener), self.view.substr(closer))
+    next_block = self.get_next_block(self.view.substr(opener), self.view.substr(closer))
 
     # Calculate how many characters the selection will change by
     changed_before = len(next_block[0]) - len(self.view.substr(opener))
@@ -263,7 +279,7 @@ class TemplaterCommand(sublime_plugin.TextCommand):
 
     return sublime.Region(region.begin() + changed_before, region.end() + changed_before)
 
-  def get_next_erb_block(self, opening_bracket, closing_bracket):
+  def get_next_block(self, opening_bracket, closing_bracket):
     return next(self.generator)
 
 
