@@ -23,8 +23,12 @@ git clone https://github.com/garetht/SublimeTemplater.git ~/.sublime_templater
 ln -fs ~/.sublime_templater/ ~/.config/sublime-text-2/Packages/SublimeTemplater
 ````
 
-### Quick Manual Installation: Windows
-Instructions are unavailable at this time.
+### Manual Installation: Windows
+Download the repository from GitHub, and place it in a folder named SublimeTemplater.
+
+From Sublime Text 2, go to the `Preferences` menu, and from there select `Browse Packages`. Copy the SublimeTemplater folder into that directory.
+
+By default, that directory, the Sublime Text packages directory, is located at `C:\Users\USERNAME\AppData\Roaming\Sublime Text 2\Packages`, where `USERNAME` is the user name on your Windows machine.
 
 
 ### Manual Installation: Mac OS X and Linux
@@ -40,9 +44,9 @@ Sublime Text 3 support is not available at this time.
 
 # Usage
 
-### Add Keybinding
+### Keybindings
 
-Open your User Keybinding File and add the following keybinding to activate the toggle command in all file types:
+By default, SublimeTemplater binds the tag insert and cycle command to `cmd`+`shift`+`p` on Macs, and `ctrl`+`shift`+`p` on Windows and Linux. You can also place this in your user keybinding preferences (`Sublime Text 2 > Preferences > Key Bindings - User` on Mac, `Preferences > Key Bindings - User` on Windows)
 
 ```json
   [
@@ -50,11 +54,11 @@ Open your User Keybinding File and add the following keybinding to activate the 
   ]
 ```
 
-...or only in the most common ERB contexts:
+You can also modify your user keybindings file to enable the shortcut in the most common templating contexts:
 
 ```json
   [
-    { "keys": ["ctrl+shift+."], "command": "erb", "context":
+    { "keys": ["ctrl+shift+."], "command": "templater", "context":
       [
         { "key": "selector", "operator": "equal", "operand": "text.html.ruby, text.haml, source.yaml, source.css, source.scss, source.js, source.coffee" }
       ]

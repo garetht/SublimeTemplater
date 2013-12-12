@@ -169,8 +169,6 @@ class TemplateListeners(sublime_plugin.EventListener):
     else:
       file_name = file_name.lower()
 
-    templates.set_percent_template()
-
     if syntax.find("javascript") >= 0:
       templates.set_percent_template()
     elif syntax.find("angularjs") >= 0:
