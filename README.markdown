@@ -44,6 +44,9 @@ Sublime Text 3 support is not available at this time.
 
 # Usage
 
+### Setting Template Syntax
+While SublimeTemplater makes some crude attempts to determine which tags it should apply given the syntax of the file you are working on, you can also set the template syntax manually by pressing `cmd`+`shift`+`p` to bring up the command palette, and then typing in `sublimetemplater` (or something shorter that brings the SublimeTemplater options up), and choosing the syntax you wish.
+
 ### Keybindings
 
 By default, SublimeTemplater binds the tag insert and cycle command to `cmd`+`shift`+`p` on Macs, and `ctrl`+`shift`+`p` on Windows and Linux. You can also place this in your user keybinding preferences (`Sublime Text 2 > Preferences > Key Bindings - User` on Mac, `Preferences > Key Bindings - User` on Windows)
