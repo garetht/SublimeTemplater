@@ -16,6 +16,10 @@
     "command": "syntax", "args": {"syntax": "percent"}
   },
   {
+    "caption": "Sublime Templater: Set AngularJS Syntax",
+    "command": "syntax", "args": {"syntax": "braces"}
+  },
+  {
     "caption": "Sublime Templater: Set Mustache Syntax",
     "command": "syntax", "args": {"syntax": "braces"}
   },

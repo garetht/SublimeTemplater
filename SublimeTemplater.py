@@ -131,29 +131,20 @@ class TemplateCollection():
     self.QUESTION_CLOSER = "?>"
     self.PHP_QUESTION_ADDONS = [['', ''], ['=', ''], ['#', ''], ['php', '']]
 
-    self.set_percent_template()
+    self.set_syntax_generator("percent")
 
   def set_syntax_generator(self, name):
     if name is "percent":
-      self.set_percent_template()
+      self.set_template(self.PERCENT_OPENER, self.PERCENT_CLOSER, self.PERCENT_ADDONS)
     elif name in "braces":
-      self.set_braces_template()
+      self.set_template(self.BRACES_OPENER, self.BRACES_CLOSER, self.BRACES_ADDONS)
     elif name in "brace-percent":
-      self.set_brace_percent_template()
+      self.set_template(self.BRACE_PERCENT_OPENER, self.BRACE_PERCENT_CLOSER, self.BRACE_PERCENT_ADDONS)
     elif name in "php":
-      self.set_php_question_template()
+      self.set_template(self.QUESTION_OPENER, self.QUESTION_CLOSER, self.PHP_QUESTION_ADDONS)
 
-  def set_percent_template(self):
-    self.template = Template(self.PERCENT_OPENER, self.PERCENT_CLOSER, self.PERCENT_ADDONS)
-
-  def set_braces_template(self):
-    self.template = Template(self.BRACES_OPENER, self.BRACES_CLOSER, self.BRACES_ADDONS)
-
-  def set_brace_percent_template(self):
-    self.template = Template(self.BRACE_PERCENT_OPENER, self.BRACE_PERCENT_CLOSER, self.BRACE_PERCENT_ADDONS)
-
-  def set_php_question_template(self):
-    self.template = Template(self.QUESTION_OPENER, self.QUESTION_CLOSER, self.PHP_QUESTION_ADDONS)
+  def set_template(self, opener, closer, addon):
+    self.template = Template(opener, closer, addon)
 
   def get_template(self):
     return self.template
@@ -170,18 +161,18 @@ class TemplateListeners(sublime_plugin.EventListener):
       file_name = file_name.lower()
 
     if syntax.find("javascript") >= 0:
-      templates.set_percent_template()
+      templates.set_syntax_generator("percent")
     elif syntax.find("angularjs") >= 0:
-      templates.set_braces_template()
+      templates.set_syntax_generator("braces")
     elif syntax.find("python") >= 0:
-      templates.set_brace_percent_template()
+      templates.set_syntax_generator("brace-percent")
     elif syntax.find("ruby") >= 0 or syntax.find("rails") >= 0:
-      templates.set_percent_template()
+      templates.set_syntax_generator("percent")
     elif syntax.find("php") >= 0:
-      templates.set_php_question_template()
+      templates.set_syntax_generator("php")
 
     if file_name.find("erb", -3) >= 0:
-      templates.set_percent_template()
+      templates.set_syntax_generator("percent")
 
   def set_syntax_change_event_listener(self, view):
     def set_syntax_closure():
